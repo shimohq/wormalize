@@ -1,0 +1,38 @@
+{
+  "name": "wormalize",
+  "version": "0.0.1",
+  "description": "Normalizes nested JSON according to a schema",
+  "main": "index.js",
+  "scripts": {
+    "ava": "NODE_ENV=test ava",
+    "lint": "eslint src",
+    "test": "npm run lint && npm run ava",
+    "build": "babel src --presets es2015-without-symbol --out-dir lib",
+    "build-test": "npm run build && npm test",
+    "doc": "./bin/generate_doc.sh",
+    "prepublish": "rm -rf lib && npm run build-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimohq/wormalize.git"
+  },
+  "keywords": [
+    "normalize"
+  ],
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "babel-cli": "^6.16.0",
+    "babel-eslint": "^7.0.0",
+    "babel-preset-es2015-without-symbol": "^6.14.5",
+    "babel-register": "^6.16.0",
+    "eslint": "^3.6.1",
+    "eslint-config-rackt": "^1.1.1",
+    "eslint-plugin-react": "^6.3.0"
+  },
+  "author": "Zihua Li <lizihua@shimo.im>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shimohq/wormalize/issues"
+  },
+  "homepage": "https://github.com/shimohq/wormalize#readme"
+}
