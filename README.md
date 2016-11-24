@@ -46,8 +46,8 @@ which makes it non-trivial to resolve them into your Redux state.
 }
 ```
 
-`wormalize` comes to rescue us in this case. By providing a schema corresponding to the structure
-of data, `wormalize` is able to resolve them to `result` and `entities` properties:
+`wormalize` comes to rescue in this case. By providing a schema corresponding to the structure
+of data, `wormalize` is able to resolve them to the `result` and `entities` properties:
 
 ```javascript
 import { wormalize } from 'wormalize'
@@ -89,7 +89,7 @@ The code above returns:
 
 Correspondingly, `dewormalize` is provided to do the opposite:
 
-```
+```javascript
 import { dewormalize } from 'wormalize'
 
 dewormalize([1, 2], [Book], {
@@ -125,4 +125,4 @@ The code above returns:
 ```
 
 The third argument of `dewormalize` can also be a function, which will be called with
-two arguments `schemaName` and `id` when resolving the data.
+two arguments `schemaName` and `id` when resolving each data.
