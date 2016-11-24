@@ -1,83 +1,50 @@
 import Schema from './Schema'
 
-export default function wormalize(data, schema) {
-  if (!data) {
-    return { result: data, entities: {} }
-  }
+export default function dewormalize(data, schema, entities) {
   if (Array.isArray(schema)) {
-    return wormalizeArray(data, schema)
+    return dewormalizeArray(data, schema, entities)
   }
   if (schema instanceof Schema) {
-    return wormalizeSchema(data, schema)
+    return dewormalizeSchema(data, schema, entities)
   }
   if (schema !== null && typeof schema === 'object') {
-    return wormalizeObject(data, schema)
+    return dewormalizeObject(data, schema, entities)
   }
 
   throw new Error(`Invalid schema: ${schema}`)
 }
 
-function wormalizeObject(data, schema) {
-  const keys = Object.keys(schema)
-  const result = {}
-  const entities = {}
-  keys.forEach((key) => {
-    const nested = wormalize(data[key], schema[key])
-    deepAssign(entities, nested.entities)
-    result[key] = nested.result
-  })
-
-  return { result, entities }
-}
-
-function wormalizeSchema(data, schema) {
-  if (schema.isPlain) {
-    return { result: data, entities: setEntity(data, schema) }
-  }
+function dewormalizeObject(data, schema, entities) {
   const result = Object.assign({}, data)
-  const entities = {}
+  Object.keys(schema).forEach((key) => {
+    result[key] = dewormalize(data[key], schema[key], entities)
+  })
+  return result
+}
+
+function dewormalizeSchema(data, schema, entities) {
+  const entity = getEntity(entities, schema.name, data)
+  if (schema.isPlain || !entity) {
+    return entity
+  }
+  const override = Object.assign({}, entity)
   schema.forEachNestedSchema(([property, nestedSchema]) => {
-    const nested = wormalize(result[property], nestedSchema)
-    result[property] = nested.result
-    deepAssign(entities, nested.entities)
+    override[property] = dewormalize(override[property], nestedSchema, entities)
   })
 
-  return { result, entities }
+  return override
 }
 
-function wormalizeArray(data, [schema]) {
-  const result = []
-  const entities = {}
-  data.forEach((item) => {
-    const nested = wormalize(item, schema)
-    result.push(nested.result)
-    deepAssign(entities, nested.entities)
-  })
-
-  return { result, entities }
+function dewormalizeArray(data, [schema], entities) {
+  return data.map((item) => dewormalize(item, schema, entities))
 }
 
-function setEntity(data, schema, entities = {}) {
-  if (typeof entities[schema.name] === 'undefined') {
-    entities[schema.name] = {}
+function getEntity(entities, schemaName, id) {
+  if (typeof entities === 'function') {
+    return entities(schemaName, id)
   }
-  entities[schema.name][data[schema.idProperty]] = data
-}
-
-function deepAssign(target, source) {
-  target = target || {}
-
-  for (const key in source) {
-    if (!source.hasOwnProperty(key)) {
-      continue
-    }
-    const value = source[key]
-    if (value !== null && typeof value === 'object') {
-      deepAssign(target[key], value)
-    } else {
-      target[key] = value
-    }
+  if (entities[schemaName] && entities[schemaName][id]) {
+    return entities[schemaName][id]
   }
-
-  return target
+  return null
 }
