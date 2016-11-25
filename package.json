@@ -1,6 +1,6 @@
 {
   "name": "wormalize",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Normalizes nested JSON according to a schema",
   "main": "lib/index.js",
   "scripts": {

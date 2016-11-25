@@ -1,6 +1,9 @@
 import Schema from './Schema'
 
 export default function dewormalize(data, schema, entities) {
+  if (!data) {
+    return data
+  }
   if (Array.isArray(schema)) {
     return dewormalizeArray(data, schema, entities)
   }
