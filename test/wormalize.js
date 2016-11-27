@@ -42,6 +42,13 @@ test('nested schema', (t) => {
   )
 })
 
+test('ignore undefined property', (t) => {
+  t.deepEqual(
+    wormalize({ id: 1 } , Book),
+    { result: 1, entities: { Book: { 1: { id: 1 } } } }
+  )
+})
+
 test('array of nested schema', (t) => {
   t.deepEqual(
     wormalize([{

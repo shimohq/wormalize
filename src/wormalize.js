@@ -47,9 +47,11 @@ function wormalizeSchema(data, schema) {
   const override = Object.assign({}, data)
   const entities = {}
   schema.forEachNestedSchema(([property, nestedSchema]) => {
-    const nested = wormalize(override[property], nestedSchema)
-    override[property] = nested.result
-    deepAssign(entities, nested.entities)
+    if (typeof override[property] !== 'undefined') {
+      const nested = wormalize(override[property], nestedSchema)
+      override[property] = nested.result
+      deepAssign(entities, nested.entities)
+    }
   })
   setEntity(override, schema.name, id, entities)
 
