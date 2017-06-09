@@ -1,6 +1,8 @@
-# Wormalize
-
-Normalizes nested JSON according to a schema
+<div align="center">
+  <img src="https://static-cdn.shimo.im/github_repos/wormalize.png" width="256" alt="" />
+  <h1>Wormalize</h1>
+  <p>Normalizes nested JSON according to a schema</p>
+</div>
 
 ## Install
 
@@ -126,3 +128,7 @@ The code above returns:
 
 The third argument of `dewormalize` can also be a function, which will be called with
 two arguments `schemaName` and `id` when resolving each data.
+
+---
+
+<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
