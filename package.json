@@ -3,6 +3,7 @@
   "version": "0.0.4",
   "description": "Normalizes nested JSON according to a schema",
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "scripts": {
     "ava": "NODE_ENV=test ava",
     "lint": "eslint src",
